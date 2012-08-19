@@ -3,6 +3,9 @@ var express = require('express');
 var app = express();
 var events = require("events");
 
+
+
+
 var events = new events.EventEmitter();
 app.use(express.bodyParser());
 
@@ -13,12 +16,19 @@ app.get('/console/:id', function(req, res){
 });
 
 app.get('/post/:id', function(req, res){
-	res.sendfile("node.html");
+	res.send('<form action="/post/mobile" method="POST"> \
+    <textarea name="content" cols="50" rows="30"></textarea>\
+    <input type="submit" value="submit" />\
+</form>')
 });
 
 app.post('/post/:id', function(req, res){
 	events.emit("receieve-"+res.id,req.body.content);
-	res.sendfile("node.html");
+	res.send('<form action="/post/mobile" method="POST"> \
+    <textarea name="content" cols="50" rows="30">'+req.body.content+'</textarea>\
+    <input type="submit" value="submit" />\
+</form>');
+
 });
 
 app.listen(3000);
